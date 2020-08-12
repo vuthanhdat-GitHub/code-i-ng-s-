@@ -1,10 +1,12 @@
 const getAllCategory = (req, res) => {
-    console.log(req.params);
-    console.log(req.body);
-    console.log(req.query.id);
-    res.send({
-      name: '.'
-    })
+  pool.query('select * from `category` ;', (err, data) => {
+    if (err) {
+        console.log(err);
+        res.send('Error Query')
+    }
+    console.log(data);
+    res.send(data)
+})
   }
   const getCategoryById = (req, res) => {
     Category.getCategoryById(req.params.categoryId, (err, data) => {
