@@ -1,0 +1,63 @@
+drop database if exists `shopese`;
+create database `shopese`;
+use `shopese`;
+
+DROP TABLE IF EXISTS `KhachHang`;
+CREATE TABLE `KhachHang`(
+ MaKh char(100) primary key not null,
+ HoTen varchar(100) not null,
+ SDT char(100) not null,
+ CoQuan varchar(100) not null
+);
+DROP TABLE IF EXISTS `NhaChoThue`;
+CREATE TABLE `NhaChoThue`(
+	MaN char(100) primary key not null,
+	DiaChi varchar(100) not null,
+	GiaThue decimal(18,2) ,
+	TenChuNha varchar(100) not null
+);
+DROP TABLE IF EXISTS `HopDong`;
+CREATE TABLE `HopDong`(
+	MaN char(100) not null,
+	MaKh char(100) not null,
+	NgayBatDau date ,
+	NgayKetThuc date ,
+	primary key (MaN,MaKh)
+);
+INSERT INTO KhachHang(MaKh,HoTen,SDT,CoQuan) VALUES ('KH001',N'Nguyễn Văn A','0123456789',N'Nhà Nước');
+INSERT INTO KhachHang(MaKh,HoTen,SDT,CoQuan) VALUES ('KH002',N'Nguyễn Văn B','0123456789',N'Nhà Nước');
+INSERT INTO KhachHang(MaKh,HoTen,SDT,CoQuan) VALUES ('KH003',N'Nguyễn Văn C','0123456789',N'Nhà Nước');
+INSERT INTO KhachHang(MaKh,HoTen,SDT,CoQuan) VALUES ('KH004',N'Nguyễn Văn D','0123456789',N'Nhà Nước');
+INSERT INTO KhachHang(MaKh,HoTen,SDT,CoQuan) VALUES ('KH005',N'Nguyễn Văn E','0123456789',N'Nhà Nước');
+INSERT INTO NhaChoThue(MaN,DiaChi,GiaThue,TenChuNha) VALUES ('MN001',N'Hà Nội','5000000',N'Chủ Nhà A');
+INSERT INTO NhaChoThue(MaN,DiaChi,GiaThue,TenChuNha) VALUES ('MN002',N'Hà Nội','10000000',N'Chủ Nhà A');
+INSERT INTO NhaChoThue(MaN,DiaChi,GiaThue,TenChuNha) VALUES ('MN003',N'Hà Nội','15000000',N'Chủ Nhà B');
+INSERT INTO NhaChoThue(MaN,DiaChi,GiaThue,TenChuNha) VALUES ('MN004',N'Hà Nội','20000000',N'Chủ Nhà B');
+INSERT INTO NhaChoThue(MaN,DiaChi,GiaThue,TenChuNha) VALUES ('MN005',N'Hà Nội','25000000',N'Nông Văn Dền');
+INSERT INTO HopDong(MaN,MaKh,NgayBatDau,NgayKetThuc) VALUES ('MN001','KH001','2020-01-01','2020-08-08');
+INSERT INTO HopDong(MaN,MaKh,NgayBatDau,NgayKetThuc) VALUES ('MN002','KH002','2020-01-01','2020-08-08');
+INSERT INTO HopDong(MaN,MaKh,NgayBatDau,NgayKetThuc) VALUES ('MN003','KH003','','');
+INSERT INTO HopDong(MaN,MaKh,NgayBatDau,NgayKetThuc) VALUES ('MN004','KH004','2020-01-01','2020-08-08');
+INSERT INTO HopDong(MaN,MaKh,NgayBatDau,NgayKetThuc) VALUES ('MN005','KH005','2020-01-01','2020-08-08');
+/* QUERY:*/
+/* phan 1 */
+SELECT DiaChi,TenChuNha,Giathue
+From NhaChoThue
+WHERE GiaThue < 10000000;
+select * from NhaChoThue
+/* phan 2 */
+SELECT distinct KhachHang.MaKh, KhachHang.HoTen, CoQuan, NhaChoThue.TenChuNha -- distinct đảm bảo ko bị trùng lặp
+FROM KhachHang,NhaChoThue,HopDong
+WHERE	KhachHang.MaKh=HopDong.MaKh 
+		AND NhaChoThue.MaN=HopDong.MaN 
+		AND NhaChoThue.TenChuNha ='Nông Văn Dền';
+/* phan 3 */
+SELECT *
+FROM NhaChoThue as N
+WHERE maN not in (select maN from hopdong);
+/* phan 3 */
+SELECT HopDong.MaN, NhaChoThue.DiaChi, NhaChoThue.GiaThue AS 'GIÁ THUÊ',NhaChoThue.TenChuNha 
+FROM NhaChoThue,HopDong
+WHERE NhaChoThue.MaN=HopDong.MaN
+		AND HopDong.NgayBatDau < HopDong.NgayKetThuc 
+		AND NhaChoThue.GiaThue=(SELECT MAX(NhaChoThue.GiaThue) FROM NhaChoThue)

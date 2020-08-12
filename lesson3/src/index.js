@@ -1,17 +1,13 @@
 const express = require('express');
-
 const { request, response } = require('express');
-
 const { createPool } = require('mysql');
-
 const pool = require('./untils/db')
-
 const app = express()
 
+const categoryRouter
 const callback = () => {
     console.log("Running at 8080");
 }
-
 app.get('/', (request, response) => {
     const data = {
         username: 'thien',
@@ -19,7 +15,6 @@ app.get('/', (request, response) => {
     }
     response.send(data)
 })
-
 app.get('/', (request, response) => {
     pool.query('select * from `user`;'), (err, data) => {
         if (err) response.send('error query')
@@ -29,7 +24,6 @@ app.get('/', (request, response) => {
     }
 }
 )
-
 app.listen(8080, callback)
 
 

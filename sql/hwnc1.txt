@@ -1,0 +1,106 @@
+--  Đưa ra tên của những hãng có cung ứng ít nhất 1 mặt hàng màu đỏ 
+SELECT 
+    `ncc`.`MSNCC`
+FROM
+    `cungcap`
+        INNER JOIN
+    `mathang` ON `mathang`.`MSMH` = `cungcap`.`MSMH`
+        INNER JOIN
+    `ncc` ON `ncc`.`MSNCC` = `cungcap`.`MSNCC`
+GROUP BY `MSNCC`
+HAVING COUNT(DISTINCT `Mausac`) > 1
+    AND COUNT(CASE
+    WHEN `Mausac` = 'do' THEN 1
+END) >= 1;
+        
+--  Đưa ra mã số của các hãng có cung ứng ít nhất 1 mặt hàng màu đỏ hoặc 1 mặt hàng màu xanh 
+SELECT 
+    `ncc`.`MSNCC`
+FROM
+    `cungcap`
+        INNER JOIN
+    `mathang` ON `mathang`.`MSMH` = `cungcap`.`MSMH`
+        INNER JOIN
+    `ncc` ON `ncc`.`MSNCC` = `cungcap`.`MSNCC`
+GROUP BY `MSNCC`
+HAVING COUNT(DISTINCT `Mausac`) > 1
+    AND COUNT(CASE
+    WHEN `Mausac` = 'do' THEN 1
+END) >= 1
+    OR COUNT(CASE
+    WHEN `Mausac` = 'xanh' THEN 1
+END) >= 1;
+        
+-- Đưa ra mã số của hãng có cung ứng ít nhất 1 mặt hàng màu đỏ và 1 mặt hàng màu xanh
+(SELECT 
+    `ncc`.`MSNCC`
+FROM
+    `cungcap`
+        INNER JOIN
+    `mathang` ON `mathang`.`MSMH` = `cungcap`.`MSMH`
+        INNER JOIN
+    `ncc` ON `ncc`.`MSNCC` = `cungcap`.`MSNCC`
+GROUP BY `MSNCC`
+HAVING COUNT(DISTINCT `Mausac`) > 1
+    AND COUNT(CASE
+    WHEN `Mausac` = 'do' THEN 1
+END) >= 1) UNION ALL (SELECT 
+    `ncc`.`MSNCC`
+FROM
+    `cungcap`
+        INNER JOIN
+    `mathang` ON `mathang`.`MSMH` = `cungcap`.`MSMH`
+        INNER JOIN
+    `ncc` ON `ncc`.`MSNCC` = `cungcap`.`MSNCC`
+GROUP BY `MSNCC`
+HAVING COUNT(DISTINCT `Mausac`) > 1
+    AND COUNT(CASE
+    WHEN `Mausac` = 'xanh' THEN 1
+END) >= 1);-- Đưa ra mã số của hãng cung ứng tất cả các mặt hàng màu đỏ 
+SELECT 
+    `ncc`.`MSNCC`
+FROM
+    `cungcap`
+        INNER JOIN
+    `mathang` ON `mathang`.`MSMH` = `cungcap`.`MSMH`
+        INNER JOIN
+    `ncc` ON `ncc`.`MSNCC` = `cungcap`.`MSNCC`
+GROUP BY `MSNCC`
+HAVING COUNT(DISTINCT `Mausac`) > 1
+    AND COUNT(CASE
+    WHEN `Mausac` = 'do' THEN 1
+END) >= 3;
+        
+-- Đưa ra mã số của mặt hàng đắt nhất được cung cấp bởi hãng Dustin 
+SELECT 
+    MAX(`Giatien`), `mathang`.`MSMH`
+FROM
+    `cungcap`
+        INNER JOIN
+    `mathang` ON `mathang`.`MSMH` = `cungcap`.`MSMH`
+        INNER JOIN
+    `ncc` ON `ncc`.`MSNCC` = `cungcap`.`MSNCC`
+WHERE
+    `TenNCC` = 'Dustin';
+
+-- Đưa ra mã số của mặt hàng được cung ứng bởi tất cả các hãng mà giá tiền đều nhỏ hơn 200 
+SELECT 
+    `mathang`.`MSMH`
+FROM
+    `cungcap`
+        INNER JOIN
+    `mathang` ON `mathang`.`MSMH` = `cungcap`.`MSMH`
+        INNER JOIN
+    `ncc` ON `ncc`.`MSNCC` = `cungcap`.`MSNCC`
+WHERE
+    `giatien` < 200;
+
+
+SELECT 
+    *
+FROM
+    `cungcap`
+        INNER JOIN
+    `mathang` ON `mathang`.`MSMH` = `cungcap`.`MSMH`
+        INNER JOIN
+    `ncc` ON `ncc`.`MSNCC` = `cungcap`.`MSNCC`;

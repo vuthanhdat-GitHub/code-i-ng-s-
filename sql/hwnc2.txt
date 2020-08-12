@@ -1,0 +1,104 @@
+-- Đưa ra tên và tuổi của các nhân viên làm việc cho cả phòng Tổ chức và Kế hoạch 
+SELECT 
+    `HoTen`, `Tuoi`
+FROM
+    `lamviec`
+        INNER JOIN
+    `nhanvien` ON `nhanvien`.`MSNV` = `lamviec`.`MSNV`
+        INNER JOIN
+    `phong` ON `phong`.`MSP` = `lamviec`.`MSP`
+WHERE
+    `Tenphong` = 'Phongtochuc'
+        OR `Tenphong` = 'Phongkehoach';
+-- Với mỗi phòng với trên 2 nhân viên, hãy đưa ra mã số phong và số nhân viên làm trong phòng đó 
+SELECT 
+    `lamviec`.`MSP`, COUNT(`lamviec`.`MSNV`), `Tenphong`
+FROM
+    `lamviec`
+        INNER JOIN
+    `nhanvien` ON `nhanvien`.`MSNV` = `lamviec`.`MSNV`
+        INNER JOIN
+    `phong` ON `phong`.`MSP` = `lamviec`.`MSP`
+GROUP BY `Tenphong`
+HAVING COUNT(`Tenphong`) >= 1;
+
+--  Đưa ra tên của các nhân viên mà lương của họ cao hơn cả ngân quỹ của tất cả các phòng mà nhân viên đó làm việc 
+SELECT 
+    `Hoten`, `Luong`
+FROM
+    `lamviec`
+        INNER JOIN
+    `nhanvien` ON `nhanvien`.`MSNV` = `lamviec`.`MSNV`
+        INNER JOIN
+    `phong` ON `phong`.`MSP` = `lamviec`.`MSP`
+WHERE
+    `Luong` >= (SELECT 
+            MAX(`Nganquy`)
+        FROM
+            `lamviec`
+                INNER JOIN
+            `nhanvien` ON `nhanvien`.`MSNV` = `lamviec`.`MSNV`
+                INNER JOIN
+            `phong` ON `phong`.`MSP` = `lamviec`.`MSP`);
+    
+-- Đưa ra mã số trưởng phòng của những người trưởng phòng mà các phòng họ quản lý đều có ngân quỹ > 1,000,000 
+SELECT 
+    `phong`.`MSTP`, `Nganquy`
+FROM
+    `lamviec`
+        INNER JOIN
+    `nhanvien` ON `nhanvien`.`MSNV` = `lamviec`.`MSNV`
+        INNER JOIN
+    `phong` ON `phong`.`MSP` = `lamviec`.`MSP`
+WHERE
+    `Nganquy` > 1000000
+GROUP BY `MSTP`;
+
+-- Đưa ra tên của người trưởng phòng mà phòng đó có ngân quỹ lớn nhất
+
+SELECT 
+    `Hoten`, `lamviec`.`MSNV`
+FROM
+    `lamviec`
+        INNER JOIN
+    `nhanvien` ON `nhanvien`.`MSNV` = `lamviec`.`MSNV`
+        INNER JOIN
+    `phong` ON `phong`.`MSP` = `lamviec`.`MSP`
+WHERE
+    `lamviec`.`MSNV` = `MSTP`
+        AND EXISTS( SELECT 
+            MAX(`Nganquy`)
+        FROM
+            `lamviec`
+                INNER JOIN
+            `nhanvien` ON `nhanvien`.`MSNV` = `lamviec`.`MSNV`
+                INNER JOIN
+            `phong` ON `phong`.`MSP` = `lamviec`.`MSP`)
+GROUP BY `Hoten`;
+
+-- Nếu một người có thể quản lý nhiều phòng, người đó có quyền kiểm soát ngân quỹ của tất cả các phògn đó. Hãy đưa ra mã số của người trưởng phòng mà tổng số ngân quỹ được kiểm soát bởi người đó > 5,000,000 
+SELECT 
+    `Hoten`, `lamviec`.`MSNV`, `lamviec`.`MSP`, SUM(`Nganquy`)
+FROM
+    `lamviec`
+        INNER JOIN
+    `nhanvien` ON `nhanvien`.`MSNV` = `lamviec`.`MSNV`
+        INNER JOIN
+    `phong` ON `phong`.`MSP` = `lamviec`.`MSP`
+WHERE
+    EXISTS( SELECT 
+            *
+        FROM
+            `phong`
+        WHERE
+            `nhanvien`.`MSNV` = `phong`.`MSTP`)
+        AND `Nganquy` > 5000000;
+
+SELECT 
+    *
+FROM
+    `lamviec`
+        INNER JOIN
+    `nhanvien` ON `nhanvien`.`MSNV` = `lamviec`.`MSNV`
+        INNER JOIN
+    `phong` ON `phong`.`MSP` = `lamviec`.`MSP`;

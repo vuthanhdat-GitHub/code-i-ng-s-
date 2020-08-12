@@ -1,0 +1,110 @@
+drop table if exists `KhachSan`;
+CREATE TABLE `KhachSan` (
+    `MaKS` CHAR(100) PRIMARY KEY NOT NULL,
+    `TenKS` NVARCHAR(100) NOT NULL,
+    `DiaChi` NVARCHAR(100) NOT NULL
+)  ENGINE=INNODB DEFAULT CHARSET=UTF8MB4;
+
+drop table if exists `Phong`;
+CREATE TABLE `Phong` (
+    `SoP` NVARCHAR(100),
+    `MaKS` NVARCHAR(100) NOT NULL,
+    `LoaiP` NVARCHAR(100) NOT NULL,
+    `Gia` DECIMAL(18 , 2 ) NOT NULL,
+    PRIMARY KEY (`SoP` , `MaKS`)
+)  ENGINE=INNODB DEFAULT CHARSET=UTF8MB4;
+
+drop table if exists `DatPhong`;
+CREATE TABLE `DatPhong` (
+    `MaKS` CHAR(100),
+    `MaKhach` NVARCHAR(100) NOT NULL,
+    `NgayNhan` NVARCHAR(100) NOT NULL,
+    `NgayTra` NVARCHAR(100) DEFAULT NULL,
+    `SoP` CHAR(100) NOT NULL,
+    PRIMARY KEY (`MaKS` , `MaKhach` , `NgayNhan`)
+)  ENGINE=INNODB DEFAULT CHARSET=UTF8MB4;
+
+drop table if exists `Khach`;
+CREATE TABLE `Khach` (
+    `MaKhach` NVARCHAR(100) PRIMARY KEY NOT NULL,
+    `HoTen` NVARCHAR(100) NOT NULL,
+    `DiaChi` NVARCHAR(100) NOT NULL
+)  ENGINE=INNODB DEFAULT CHARSET=UTF8MB4;
+
+
+INSERT INTO KhachSan(MaKs,TenKs,DiaChi) VALUES ('KS001','abc','Hà Nội');
+INSERT INTO KhachSan(MaKs,TenKs,DiaChi) VALUES ('KS002','Melia','Hà Đông');
+INSERT INTO KhachSan(MaKs,TenKs,DiaChi) VALUES ('KS003','abe','Hà Nội');
+INSERT INTO KhachSan(MaKs,TenKs,DiaChi) VALUES ('KS004','Melia','Hà Nội');
+INSERT INTO KhachSan(MaKs,TenKs,DiaChi) VALUES ('KS005','Melia','Hà Tây');
+INSERT INTO KhachSan(MaKs,TenKs,DiaChi) VALUES ('KS006','abh','Hà Đông');
+INSERT INTO Phong(SoP,MaKS,LoaiP,Gia) VALUES ('3','KS001','bt','100000');
+INSERT INTO Phong(SoP,MaKS,LoaiP,Gia) VALUES ('3','KS002','bt','400000');
+INSERT INTO Phong(SoP,MaKS,LoaiP,Gia) VALUES ('3','KS003','bt','500000');
+INSERT INTO Phong(SoP,MaKS,LoaiP,Gia) VALUES ('3','KS004','bt','700000');
+INSERT INTO Phong(SoP,MaKS,LoaiP,Gia) VALUES ('3','KS005','bt','100000');
+INSERT INTO Phong(SoP,MaKS,LoaiP,Gia) VALUES ('3','KS006','bt','200000');
+INSERT INTO DatPhong(MaKS,MaKhach,NgayNhan,NgayTra,SoP) VALUES ('KS001','a','01-08-2020','10-08-2020','3');
+INSERT INTO DatPhong(MaKS,MaKhach,NgayNhan,NgayTra,SoP) VALUES ('KS002','b','01-08-2020','10-08-2020','3');
+INSERT INTO DatPhong(MaKS,MaKhach,NgayNhan,NgayTra,SoP) VALUES ('KS003','c','01-08-2020','10-08-2020','3');
+INSERT INTO DatPhong(MaKS,MaKhach,NgayNhan,NgayTra,SoP) VALUES ('KS004','d','01-08-2020','10-08-2020','3');
+INSERT INTO DatPhong(MaKS,MaKhach,NgayNhan,NgayTra,SoP) VALUES ('KS005','e','01-08-2020','10-08-2020','3');
+INSERT INTO DatPhong(MaKS,MaKhach,NgayNhan,NgayTra,SoP) VALUES ('KS006','f','01-08-2020','10-08-2020','3');
+INSERT INTO Khach(MaKhach,HoTen,DiaChi) VALUES ('a','Nguyễn Văn A','Thái Bình');
+INSERT INTO Khach(MaKhach,HoTen,DiaChi) VALUES ('b','Nguyễn Văn B','Nam Định');
+INSERT INTO Khach(MaKhach,HoTen,DiaChi) VALUES ('c','Nguyễn Văn C','London');
+INSERT INTO Khach(MaKhach,HoTen,DiaChi) VALUES ('d','Nguyễn Văn D','Hà Nội');
+INSERT INTO Khach(MaKhach,HoTen,DiaChi) VALUES ('e','Nguyễn Văn E','Thanh Hóa');
+INSERT INTO Khach(MaKhach,HoTen,DiaChi) VALUES ('f','Nguyễn Văn F','Bắc Giang');
+
+/* QUERY: */
+SELECT 
+    Phong.Gia, Phong.LoaiP
+FROM
+    Khachsan,
+    Phong
+WHERE
+    khachsan.MaKs = Phong.MaKs
+        AND Khachsan.TenKs = 'Melia';
+-- phan 2.b: Khách hàng đang ở khách sạn Melia
+SELECT 
+    khach.MaKhach, khach.HoTen, khach.DiaChi
+FROM
+    khach,
+    datphong,
+    khachsan
+WHERE
+    khach.MaKhach = datphong.MaKhach
+        AND datphong.MaKs = khachsan.MaKs
+        AND khachsan.TenKs = 'Melia'
+        AND datphong.NgayTra IS NULL; -- để trống ngày trả phòng
+-- Query 2.d: Các phòng chưa từng có người ở
+SELECT 
+    p.SoP, p.LoaiP, p.Gia
+FROM
+    phong AS p,
+    khachsan AS ks
+WHERE
+    p.MaKs = ks.MaKs AND ks.TenKs = 'Melia'
+        AND NOT EXISTS( SELECT 
+            datphong.NgayNhan
+        FROM
+            datphong
+        WHERE
+            datphong.SoP = phong.soP); -- chọn tất cả các bản ghi "không" có đk()
+-- Query 2.e: Tổng số phòng mỗi ks tại London
+SELECT 
+    khachsan.MaKs,
+    khachsan.TenKs,
+    COUNT(phong.SoP) AS 'Số Phòng'
+FROM
+    phong,
+    khachsan
+WHERE
+    phong.MaKs = khachsan.MaKs
+        AND khachsan.DiaChi = 'London'
+GROUP BY khachsan.MaKs;
+-- Query 2.e: Tăng giá tất cả các phòng thêm 5% 
+UPDATE phong 
+SET 
+    Gia = Gia * 1.05 ;
