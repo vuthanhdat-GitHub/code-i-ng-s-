@@ -2,6 +2,7 @@ const express = require('express');
 const { createPool } = require('mysql');
 const pool = require('./untils/db')
 const app = express()
+
 const bodyparser = require('body-parser')
 
 app.use(bodyparser.json())
