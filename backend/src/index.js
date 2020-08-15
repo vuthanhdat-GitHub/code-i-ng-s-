@@ -1,5 +1,5 @@
-const express = require('express');
-const { createPool } = require('mysql');
+const express = require('express')
+const { createPool } = require('mysql')
 const pool = require('./untils/db')
 const app = express()
 
