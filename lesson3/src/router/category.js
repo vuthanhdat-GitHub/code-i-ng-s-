@@ -2,7 +2,7 @@ const categoryController = require('../controllers/category');
 const { deleteCategoryById } = require('../controllers/category');
 const Route = require('express').Router();
 
-Route.get('/', categoryController.getCategoryById);
+Route.get('/', categoryController.getAllCategory);
 Route.get('/:id', categoryController.getCategoryById);
 Route.post('/', categoryController.createCategory);
 Route.put('/:id', categoryController.updateCategoryById);

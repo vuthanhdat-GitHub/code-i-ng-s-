@@ -1,26 +1,34 @@
 const express = require('express');
-const { request, response } = require('express');
 const { createPool } = require('mysql');
 const pool = require('./untils/db')
 const app = express()
+const bodyparser = require('body-parser')
 
-const categoryRouter
+app.use(bodyparser.json())
+app.use(bodyparser.urlencoded({ extended: true }))
+
+
 const callback = () => {
     console.log("Running at 8080");
 }
-app.get('/', (request, response) => {
+
+const categoryRouter = require('./router/category');
+
+app.use('/api/v1/category', categoryRouter);
+
+app.get('/', (_req, res) => {
     const data = {
         username: 'thien',
         password: 'thienagain'
     }
-    response.send(data)
+    res.send(data)
 })
-app.get('/', (request, response) => {
+app.get('/', (_req, res) => {
     pool.query('select * from `user`;'), (err, data) => {
-        if (err) response.send('error query')
+        if (err) res.send('error query')
         console.log('error');
         console.log(data);
-        response.send(data)
+        res.send(data)
     }
 }
 )
