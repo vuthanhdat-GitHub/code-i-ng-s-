@@ -22,46 +22,29 @@ const getCategoryById = async (req, res) => {
 }
 const createCategory = async (req, res) => {
     try {
-        const newCategory = {
-            categoryId: req.body.categoryId,
-            display: req.body.display,
-            description: req.body.description,
-            imageUrl: req.body.imageUrl
-        };
-        const data = await categoryService.creatCategory(newCategory)
-        res.send("Category new")
+        const { data } = await category.createCategory(req.body);
+        res.send(' Category new ');
     } catch (err) {
-        console.log(err)
+        console.log(err);
+        res.send(err);
     }
 }
 const updateCategoryById = async (req, res) => {
     try {
-        const { id } = req.params;
-        const updateCategory = {
-            display: req.body.display,
-            description: req.body.description,
-            imageUrl: req.body.imageUrl
-        };
-        const data = await categoryService.updateCategorybyId(updateCategory, id)
-        res.send('Update data')
+        const { data } = await category.updateCategoryById(parseInt(req.params.id), req.body)
+        res.send('Update Category');
     } catch (err) {
-        console.log(err)
+        console.log(err);
+        res.send(err);
     }
 }
 const deleteCategoryById = async (req, res) => {
     try {
-        const { id } = req.params;
-        const deletedCategory = {
-            display: req.body.display,
-            description: req.body.description,
-            imageUrl: req.body.imageUrl
-        };
-        const data = await categoryService.deleteCategorybyId(deletedCategory, id)
-        res.send({
-            status: 'Delete'
-        })
+        const { data } = await category.deleteCategoryById(parseInt(req.params.id));
+        res.send('delete');
     } catch (err) {
         console.log(err);
+        res.send(err);
     }
 }
 const getAllCategoryId = async (req, res)=>{
