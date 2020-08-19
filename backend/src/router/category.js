@@ -8,11 +8,4 @@ Route.post('/', categoryController.createCategory);
 Route.put('/:id', categoryController.updateCategoryById);
 Route.delete('/:id', deleteCategoryById);
 
-const a = {
-  id: 1,
-  name: "thien"
-};
-
-const { id } = a;
-
 module.exports = Route;

@@ -26,13 +26,27 @@ const deleteCategorybyId = async (deletedCategory, id) => {
     const sql = `update category set ? where categoryId = ?`
     const data = db.query(sql, [deletedCategory, id])
 }
+const getAllCategoryId = async () => {
+    const aql = `
+    SELECT categoryId, display
+    FROM category
+    WHERE isDelete = 0`
+    const data = await db.queryMulti(sql);
+    return {
+        data,
+        metadata: {
+            length: date.length,
+        }
+    }
+}
 
 module.exports = {
     getAllCategory,
     getCategoryById,
     creatCategory,
     updateCategorybyId,
-    deleteCategorybyId
+    deleteCategorybyId,
+    getAllCategoryId
 }
 
 
