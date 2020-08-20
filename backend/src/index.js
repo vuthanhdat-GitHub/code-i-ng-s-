@@ -33,6 +33,10 @@ app.get('/', (_req, res) => {
     }
 }
 )
+
+const {errorHandle}= require('./middlewares/errorHandle')
+app.use(errorHandle);
+
 app.listen(8080, callback)
 
 
