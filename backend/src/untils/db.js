@@ -55,4 +55,4 @@ module.exports = {
     queryMulti
 }
 
-module.exports = pool
+module.exports = pool;

@@ -2,8 +2,11 @@ const productServices = require('../services/account')
 
 const getAllAccount = async (req, res) => {
     try {
-        const data = await accountService.getAllAccount()
-        res.send(data)
+        const data = await accountService.getAllAccount(req.pagination)
+        res.send({
+            data,
+            metadata
+        });
     } catch (err) {
         console.log(err)
     }
@@ -31,7 +34,7 @@ const createAccount = async (req, res) => {
 }
 const updateAccountById = async (req, res) => {
     try {
-        const { data } = await account.updateAccountById(req.params.id, req.body);
+        const { data } = await account.updateAccountById(parsentInt(req.params.id), req.body);
         res.send('Account updated')
     } catch (err) {
         console.log(err);

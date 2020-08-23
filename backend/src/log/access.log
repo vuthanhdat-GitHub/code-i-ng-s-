@@ -1,0 +1,8 @@
+::1 - - [23/Aug/2020:09:15:57 +0000] "GET /category// HTTP/1.1" 404 149 "-" "PostmanRuntime/7.26.3"
+::1 - - [23/Aug/2020:09:16:03 +0000] "GET /category?page=2&size=4 HTTP/1.1" 404 147 "-" "PostmanRuntime/7.26.3"
+::1 - - [23/Aug/2020:09:16:15 +0000] "POST /category HTTP/1.1" 404 148 "-" "PostmanRuntime/7.26.3"
+::1 - - [23/Aug/2020:09:19:03 +0000] "GET /api/v1/product HTTP/1.1" - - "-" "PostmanRuntime/7.26.3"
+::1 - - [23/Aug/2020:09:21:42 +0000] "GET /category?page=2&size=4 HTTP/1.1" 404 147 "-" "PostmanRuntime/7.26.3"
+::1 - - [23/Aug/2020:09:24:43 +0000] "GET /category?page=2&size=4 HTTP/1.1" 404 147 "-" "PostmanRuntime/7.26.3"
+::1 - - [23/Aug/2020:09:42:13 +0000] "GET /account HTTP/1.1" 404 146 "-" "PostmanRuntime/7.26.3"
+::1 - - [23/Aug/2020:09:43:00 +0000] "GET /product/ HTTP/1.1" 404 147 "-" "PostmanRuntime/7.26.3"

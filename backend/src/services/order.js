@@ -1,4 +1,4 @@
-const db = require('../utils/db')
+const db = require('../untils/db')
 
 const getAllOrder = async ({ limit, offset }) => {
     const sql = `

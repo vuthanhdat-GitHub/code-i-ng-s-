@@ -3,32 +3,32 @@ const ProductService = require('../services/product')
 const AccountService = require('../services/account')
 const OrderService = require('../services/order')
 
-const getAllCategoryId = async (req, res) => {
-    const { data, metadata } = await CategoryService.getAllId()
+const listCategory = async (req, res) => {
+    const { data, metadata } = await CategoryService.listCategory()
     res.send({
         status: 1,
         metadata,
         data
     })
 }
-const getAllProductId = async (req, res) => {
-    const { data, metadata } = await ProductService.getAllId()
+const listProduct = async (req, res) => {
+    const { data, metadata } = await ProductService.listProduct()
     res.send({
         status: 1,
         metadata,
         data
     })
 }
-const getAllAccountId = async (req, res) => {
-    const { data, metadata } = await AccountService.getAllId()
+const listAccount = async (req, res) => {
+    const { data, metadata } = await AccountService.listAccount()
     res.send({
         status: 1,
         metadata,
         data
     })
 }
-const getAllOrderId = async (req, res) => {
-    const { data, metadata } = await OrderService.getAllId()
+const listOrder = async (req, res) => {
+    const { data, metadata } = await OrderService.listOrder()
     res.send({
         status: 1,
         metadata,
@@ -37,8 +37,8 @@ const getAllOrderId = async (req, res) => {
 }
 
 module.exports = {
-    getAllCategoryId,
-    getAllProductId,
-    getAllAccountId,
-    getAllOrderId
+    listCategory,
+    listProduct,
+    listAccount,
+    listOrder
 }

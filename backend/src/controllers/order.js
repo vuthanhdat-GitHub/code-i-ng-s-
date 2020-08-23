@@ -2,8 +2,11 @@ const productServices = require('../services/order')
 
 const getAllOrder = async (req, res) => {
     try {
-        const data = await orderService.getAllOrder()
-        res.send(data)
+        const data = await orderService.getAllOrder(req.pagination)
+        res.send({
+            data,
+            metadata
+        });
     } catch (err) {
         console.log(err)
     }
@@ -31,7 +34,7 @@ const createOrder = async (req, res) => {
 }
 const updateOrderById = async (req, res) => {
     try {
-        const { data } = await order.updateOrderById(req.params.id, req.body);
+        const { data } = await order.updateOrderById(parsenInt(req.params.id), req.body);
         res.send('Order updated')
     } catch (err) {
         console.log(err);
