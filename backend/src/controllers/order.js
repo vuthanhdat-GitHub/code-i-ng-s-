@@ -1,9 +1,10 @@
-const productServices = require('../services/order')
+const orderService = require('../services/order')
 
 const getAllOrder = async (req, res) => {
     try {
-        const data = await orderService.getAllOrder(req.pagination)
+        const {data, metadata} = await orderService.getAllOrder(req.pagination)
         res.send({
+            status: 1,
             data,
             metadata
         });

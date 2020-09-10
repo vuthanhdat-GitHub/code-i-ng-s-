@@ -1,9 +1,10 @@
-const productServices = require('../services/account')
+const accountService = require('../services/account')
 
 const getAllAccount = async (req, res) => {
     try {
-        const data = await accountService.getAllAccount(req.pagination)
+        const {data, metadata} = await accountService.getAllAccount(req.pagination)
         res.send({
+            status: 1,
             data,
             metadata
         });

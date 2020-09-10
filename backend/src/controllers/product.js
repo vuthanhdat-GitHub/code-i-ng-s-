@@ -1,10 +1,11 @@
-const productServices = require('../services/product')
+const productService = require('../services/product')
 const product = require('../services/product')
 
 const getAllProduct = async (req, res) => {
     try {
-        const data = await productService.getAllProduct(req.pagination)
+        const {data, metadata} = await productService.getAllProduct(req.pagination)
         res.send({
+            status: 1,
             data,
             metadata
         });

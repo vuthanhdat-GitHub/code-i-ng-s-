@@ -36,23 +36,31 @@ const queryOne = (sql, params) => {
 
 }
 
+// const queryMulti = (sql, params) => {
+//     pool.query(sql, params, (err, result) => {
+//         return new Promise((resolve, reject) => {
+//             pool.query(sql, params, (err, result) => {
+//                 if (err) reject(err)
+//                 else resolve(result)
+//             })
+//         })
+
+//     });
+
+// }
+
 const queryMulti = (sql, params) => {
-    pool.query(sql, params, (err, result) => {
-        return new Promise((resolve, reject) => {
-            pool.query(sql, params, (err, result) => {
-                if (err) reject(err)
-                else resolve(result)
-            })
-        })
-
-    });
-
-}
+    
+    return new Promise((resolve, reject) => {
+      pool.query(sql, params, (err, result) => {
+        if (err) reject(err)
+        else resolve(result)
+      })
+    })  
+  }
 
 module.exports = {
     query,
     queryOne,
     queryMulti
 }
-
-module.exports = pool;

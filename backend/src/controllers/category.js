@@ -1,9 +1,10 @@
-const categoryServices = require('../services/category')
+const categoryService = require('../services/category')
 
 const getAllCategory = async (req, res) => {
     try {
-        const data = await categoryService.getAllcategory(req.pagination)
+        const {data, metadata }= await categoryService.getAllCategory(req.pagination)
         res.send({
+            status: 1,
             data,
             metadata
         });
@@ -25,7 +26,7 @@ const getCategoryById = async (req, res) => {
 }
 const createCategory = async (req, res) => {
     try {
-        const { data } = await category.createCategory(req.body);
+        const {data}  = await category.createCategory(req.body);
         res.send(' Category new ');
     } catch (err) {
         console.log(err);

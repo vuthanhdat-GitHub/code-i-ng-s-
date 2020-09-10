@@ -1,5 +1,5 @@
-//const dotenv = require('dotenv')
-//dotenv.config()
+const dotenv = require('dotenv')
+dotenv.config()
 
 const express = require('express')
 const path = require('path')
@@ -10,10 +10,9 @@ const pagination = require('./middlewares/pagination')
 
 const app = express()
 
-// 1. middlewares ( bodyparser , ... )
 app.use(bodyParser.json())
 var accessLogStream = rfs.createStream('access.log', {
-  interval: '1d', // rotate daily
+  interval: '1d', 
   path: path.join(__dirname, 'log')
 })
 app.use(morgan('combined', { stream: accessLogStream }))
@@ -27,7 +26,6 @@ app.use((req, res, next) => {
   next();
 })
 
-// 2. router
 const parameterRouter = require('./routers/parameter')
 const categoryRouter = require('./routers/category')
 const productRouter = require('./routers/product')
@@ -41,20 +39,18 @@ app.use('/api/v1/order', orderRouter);
 // app.use('/api/v1/account', accountRouter);
 
 app.get('/api/v1/test-err', (req, res, next) => {
-  next('Có lỗi 1')
+  next('err')
 })
 app.get('/api/v1/test-err2', (req, res, next) => {
-  throw Error('Có lỗi 2')
+  throw Error('err')
 })
 
-// 3. error handle middleware
 const {errorHandle} = require('./middlewares/errorHandle')
-app.use(errorHandle); // dam bao server khong bi chet vi loi gi do
+app.use(errorHandle); 
 
-// 4. listen
 app.listen(8080, err => {
     if (err) console.log(err);
-    console.log("Listening at port 8080");
+    console.log("Running at port 8080");
 });
 
 

@@ -1,9 +1,27 @@
 const db = require('../untils/db')
 
-const getAllCategory = async () => {
-    const sql = `SELECT * FROM category;`;
-    const data = await db.queryMulti(sql);
-    return data;
+const getAllCategory = async ({ limit, offset}) => {
+    const sql = `
+    SELECT display, description, imageUrl, categoryId
+    FROM category
+    WHERE isDelete = 0
+    LIMIT ?
+    OFFSET ?`
+    const data = await db.queryMulti(sql,[limit, offset]);
+
+    const countSql = `
+    SELECT count(categoryId) as total
+    FROM category;`;
+    const total = await db.queryOne(countSql);
+    console.log(total)
+    
+    return {
+        data,
+        metadata: {
+            length: data.length,
+            total
+        }
+    }
 }
 
 const getCategoryById = async (id) => {

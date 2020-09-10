@@ -1,5 +1,4 @@
 const bcrypt = require('bcrypt')
-// npm i bcrypt ( nếu lỗi chạy 'npm i node-gyp' xong rồi chạy npm i bcrypt)
 const jwt = require('jsonwebtoken')
 
 const { JWT_SECRET_KEY } = process.env;

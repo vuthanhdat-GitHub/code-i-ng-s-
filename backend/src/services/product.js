@@ -13,7 +13,7 @@ const getAllProduct = async ({ limit, offset }) => {
   SELECT count(productId) as total
   FROM product
   WHERE isDelete = 0;`;
-  const { total } = await db.queryOne(countSql);
+  const total = await db.queryOne(countSql);
 
   return {
     data,
