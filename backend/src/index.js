@@ -10,21 +10,28 @@ const pagination = require('./middlewares/pagination')
 
 const app = express()
 
+
+//before middleware
+
 app.use(bodyParser.json())
 var accessLogStream = rfs.createStream('access.log', {
-  interval: '1d', 
+  interval: '1d',
   path: path.join(__dirname, 'log')
 })
 app.use(morgan('combined', { stream: accessLogStream }))
 app.use(pagination)
+
+//after middleware
 app.use((req, res, next) => {
   console.log('------------------------------------------------------');
   console.log('req', req.method, req.originalUrl);
   console.log('body: ', req.body);
   console.log('params: ', req.params);
-  console.log('query: ',req.query);
+  console.log('query: ', req.query);
   next();
 })
+
+
 
 const parameterRouter = require('./routers/parameter')
 const categoryRouter = require('./routers/category')
@@ -45,12 +52,12 @@ app.get('/api/v1/test-err2', (req, res, next) => {
   throw Error('err')
 })
 
-const {errorHandle} = require('./middlewares/errorHandle')
-app.use(errorHandle); 
+const { errorHandle } = require('./middlewares/errorHandle')
+app.use(errorHandle);
 
 app.listen(8080, err => {
-    if (err) console.log(err);
-    console.log("Running at port 8080");
+  if (err) console.log(err);
+  console.log("Running at port 8080");
 });
 
 

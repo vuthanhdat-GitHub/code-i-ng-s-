@@ -1,60 +1,61 @@
-const accountService = require('../services/account')
+const account = require('../services/account');
 
-const getAllAccount = async (req, res) => {
-    try {
-        const {data, metadata} = await accountService.getAllAccount(req.pagination)
-        res.send({
-            status: 1,
-            data,
-            metadata
-        });
-    } catch (err) {
-        console.log(err)
-    }
+const getAllAccount = async(req, res, next) => {
+    const { data, metadata } = await account.getAll(req.pagination);
+    res.send({
+        data,
+        metadata
+    });
 }
-const getAccountById = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const data = await accountService.getAccountById(id)
-        res.send({
-            status: 1,
-            data: data
+
+const getAllAccountById = async(req, res, next) => {
+    const { data } = await account.getById(req.params.id);
+    res.send(data);
+}
+
+const createAccount = async(req, res, next) => {
+    const newAccount = {
+        username: req.body.username,
+        password: req.body.password,
+    }
+    if (!newAccount.username || !newAccount.password) {
+        res.status(400).send({
+            status: 0,
+            message: 'Tên người dùng hoặc mật khẩu trống!'
         })
-    } catch (err) {
-        console.log(err);
     }
+    if (newAccount.password.length < 6) {
+        res.status(400).send({
+            status: 0,
+            message: 'Mật khẩu phải có nhiều hơn 6 chữ số!'
+        })
+    }
+    const data = await account.create(newAccount);
+    if (data === "Tài khoản đã tồn tại!") {
+        res.status(400).send({
+            status: 0,
+            message: 'Tài khoản đã tồn tại!'
+        })
+    }
+    res.status(400).send({
+        status: 1,
+        message: 'Tạo tài khoản thành công'
+    })
 }
-const createAccount = async (req, res) => {
-    try {
-        const { data } = await account.createAccount(req.body);
-        res.send('Account new')
-    } catch (err) {
-        console.log(err);
-        res.send(err);
-    }
+
+const updateAccountById = async(req, res) => {
+    const { data } = await account.updateById(req.params.id, req.body);
+    res.send('updated!');
 }
-const updateAccountById = async (req, res) => {
-    try {
-        const { data } = await account.updateAccountById(parsentInt(req.params.id), req.body);
-        res.send('Account updated')
-    } catch (err) {
-        console.log(err);
-        res.send(err);
-    }
-}
-const deleteAccountById = async (req, res) => {
-    try {
-        const { data } = await account.deleteAccountById(req.params.id);
-        res.send('Account deleted ')
-    } catch (err) {
-        console.log(err);
-        res.send(err);
-    }
+
+const deleteAccountById = async(req, res) => {
+    const { data } = await account.deleteById(req.params.id);
+    res.send('deleted!')
 }
 
 module.exports = {
     getAllAccount,
-    getAccountById,
+    getAllAccountById,
     createAccount,
     updateAccountById,
     deleteAccountById

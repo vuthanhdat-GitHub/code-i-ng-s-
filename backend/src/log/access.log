@@ -41,3 +41,4 @@
 ::1 - - [03/Sep/2020:09:50:22 +0000] "GET /api/v1/order HTTP/1.1" - - "-" "PostmanRuntime/7.26.3"
 ::1 - - [09/Sep/2020:16:38:56 +0000] "GET /api/v1/product HTTP/1.1" 200 4918 "-" "PostmanRuntime/7.26.3"
 ::1 - - [09/Sep/2020:16:41:12 +0000] "GET /api/v1/order HTTP/1.1" - - "-" "PostmanRuntime/7.26.3"
+::1 - - [10/Sep/2020:12:51:00 +0000] "GET /api/v1/category HTTP/1.1" 200 1816 "-" "PostmanRuntime/7.26.3"
